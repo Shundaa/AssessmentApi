@@ -14,4 +14,5 @@ public class IndexController {
 	  String db() {
 	    return "UP and Running DATA BASE";
 	  }
+	  
 }
