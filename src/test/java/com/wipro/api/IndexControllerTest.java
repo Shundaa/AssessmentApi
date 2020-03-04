@@ -32,4 +32,5 @@ public class IndexControllerTest {
 				.getForEntity(new URL("http://localhost:" + port + "/healthCheck/dataBase").toString(), String.class);
 		assertEquals("UP and Running DATA BASE", response.getBody());
 	}
-}
+
+ }
