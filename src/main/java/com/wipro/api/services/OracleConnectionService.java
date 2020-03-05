@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import oracle.jdbc.datasource.OracleDataSource;
@@ -12,16 +14,28 @@ import oracle.jdbc.datasource.OracleDataSource;
 @Service
 public class OracleConnectionService {
 	
-	public void getConnetcion() throws SQLException {
+	@Value("${spring.datasource.url}")
+	private String dbUrl;
+
+	@Value("${spring.datasource.username}")
+	private String dbUserName;
+
+	@Value("${spring.datasource.password}")
+	private String dbPassword;
+
+	public String getConnetcion(Map<String, String> model) throws SQLException {
 		OracleDataSource ods = new oracle.jdbc.pool.OracleDataSource();
-		ods.setURL("jdbc:oracle:thin:@//10.197.83.50:1521/XE"); // jdbc:oracle:thin@//[nome do host]:[porta]/[nome do serviço de BD]
-		ods.setUser("system"); // [nome do usuário]
-		ods.setPassword("wiprodb"); // [senha]
+		StringBuilder result=new StringBuilder();
+		ods.setURL(dbUrl);
+		ods.setUser(dbUserName);
+		ods.setPassword(dbPassword);
 		Connection conn = ods.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT 'Hello World!' FROM dual");
+		PreparedStatement stmt = conn.prepareStatement("SELECT 'UP and Running DATA BASE' FROM dual");
 		ResultSet rslt = stmt.executeQuery();
 		while (rslt.next()) {
-			System.out.println(rslt.getString(1));
+			result.append(rslt.getString(1));
 		}
+		System.out.println(model.toString());
+			return result.toString();
 	}
 }
