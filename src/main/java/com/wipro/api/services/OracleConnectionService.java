@@ -3,19 +3,20 @@ package com.wipro.api.services;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySource("classpath:queries.properties")
 public class OracleConnectionService {
 	
 	@Autowired
-	EntityManager entitymanger;
+	EntityManager entityManager;
 	
 	@Value("${spring.queries.status-query}") 
 	private String query;
 	
 	public String getHealth() {
-		//need to do a database fail when is down
-		return entitymanger.createNativeQuery(query).getResultList().toString();
+		return entityManager.createNativeQuery(query).getResultList().toString();
 	}
 }
