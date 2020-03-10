@@ -28,7 +28,7 @@ public class ConnectionServiceTest {
 
     @Test
     public void connectionService_UpAndRunningDataBase(){
-        Mockito.when(entityManager.createNativeQuery(Mockito.anyString()).).thenReturn("[UP and Running DATA BASE]");
+       // Mockito.when(entityManager.createNativeQuery(Mockito.anyString()).).thenReturn("[UP and Running DATA BASE]");
         Assert.assertEquals(connectionService.getHealthDB(), "[UP and Running DATA BASE]");
     }
 }
