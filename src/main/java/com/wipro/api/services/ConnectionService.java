@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ConnectionService {
 	
 	@Autowired
-	EntityManager entityManager;
+	private EntityManager entityManager;
 	
 	@Value("${spring.queries.status-query}") 
 	private String query;

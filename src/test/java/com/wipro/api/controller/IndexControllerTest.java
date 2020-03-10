@@ -1,5 +1,6 @@
 package com.wipro.api.controller;
 
+import com.wipro.api.services.ConnectionService;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -12,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 
-import com.wipro.api.services.ConnectionService;
+import com.wipro.api.services.ConnectionServiceTest;
 
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
@@ -23,6 +24,7 @@ public class IndexControllerTest {
 	
 	@Autowired
 	private IndexController indexControler;
+
 	@Test
 	public void IndexController_HealthCheckReturnsOK() throws Exception {
 
