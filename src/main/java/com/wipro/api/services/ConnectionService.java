@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @PropertySource("classpath:queries.properties")
-public class OracleConnectionService {
+public class ConnectionService {
 	
 	@Autowired
 	EntityManager entityManager;
@@ -17,6 +17,10 @@ public class OracleConnectionService {
 	private String query;
 	
 	public String getHealth() {
+		return "[UP and Running]";
+	}
+	
+	public String getHealthDB() {
 		return entityManager.createNativeQuery(query).getResultList().toString();
 	}
 }
