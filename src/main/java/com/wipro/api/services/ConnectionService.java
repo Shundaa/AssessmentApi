@@ -17,15 +17,19 @@ public class ConnectionService {
 
 	@Value("${spring.queries.status-query}")
 	private String query;
-
+	
+	private JsonObject message;
+	
+	private ConnectionService() {
+		message = new JsonObject();
+	}
+	
 	public JsonObject getHealth() {
-		JsonObject message = new JsonObject();
 		message.addProperty("message", "UP and Running");
 		return message;
 	}
 
 	public JsonObject getHealthDB() {
-		JsonObject message = new JsonObject();
 		message.addProperty("message", entityManager.createNativeQuery(query).getResultList().toString());
 		return message;
 	}
