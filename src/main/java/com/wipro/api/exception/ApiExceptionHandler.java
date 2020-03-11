@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -16,6 +17,8 @@ public class ApiExceptionHandler {
 	@ExceptionHandler
 	@ResponseBody
 	public ResponseEntity<String> handleDataBaseError(RuntimeException ex) {
-		return new ResponseEntity<String>(gson.toJson("UP and Running Data Base Fail"), HttpStatus.SERVICE_UNAVAILABLE);
+		JsonObject message = new JsonObject();
+		message.addProperty("message", "UP and Running Data Base Fail");
+		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }

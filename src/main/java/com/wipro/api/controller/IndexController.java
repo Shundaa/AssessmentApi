@@ -12,18 +12,18 @@ import com.wipro.api.services.ConnectionService;
 @RestController
 public class IndexController {
 
-    private static final Gson gson = new Gson();
-    
+	private static final Gson gson = new Gson();
+
 	@Autowired
 	private ConnectionService oracleConnection;
-	
+
 	@GetMapping("/healthCheck")
 	ResponseEntity<String> index() {
-		return new ResponseEntity<>(gson.toJson(oracleConnection.getHealth()),HttpStatus.OK);
+		return new ResponseEntity<>(gson.toJson(oracleConnection.getHealth()), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/healthCheck/dataBase")
-	ResponseEntity<String> db(){
-		return new ResponseEntity<>((gson.toJson(oracleConnection.getHealthDB())),HttpStatus.OK);
+	ResponseEntity<String> db() {
+		return new ResponseEntity<>((gson.toJson(oracleConnection.getHealthDB())), HttpStatus.OK);
 	}
 }
