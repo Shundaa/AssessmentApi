@@ -1,1 +1,2 @@
-com\wipro\api\IndexControllerTest.class
+com\wipro\api\services\ConnectionServiceTest.class
+com\wipro\api\controller\IndexControllerTest.class

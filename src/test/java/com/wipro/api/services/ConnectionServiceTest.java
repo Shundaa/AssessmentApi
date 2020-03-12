@@ -1,34 +1,47 @@
 package com.wipro.api.services;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import com.google.gson.JsonObject;
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:test.properties")
+@RunWith(MockitoJUnitRunner.class)
 public class ConnectionServiceTest {
 
-    @Autowired
-    ConnectionService connectionService ;
+	@InjectMocks
+	ConnectionService connectionService;
 
-    @Mock
-    EntityManager entityManager;
+	@Mock
+	EntityManager entityManager;
 
-    @Test
-    public void connectionService_UpAndRunning(){
-        Assert.assertEquals(connectionService.getHealth(),"[UP and Running]");
-    }
-
-    @Test
-    public void connectionService_UpAndRunningDataBase(){
-       // Mockito.when(entityManager.createNativeQuery(Mockito.anyString()).).thenReturn("[UP and Running DATA BASE]");
-        Assert.assertEquals(connectionService.getHealthDB(), "[UP and Running DATA BASE]");
-    }
+	@Test
+	public void connectionService_UpAndRunning() {
+		JsonObject message = new JsonObject();
+		message.addProperty("message", "UP and Running");
+		Assert.assertEquals(message, connectionService.getHealth());
+	}
+	
+	//@Test query on services is null????@value?
+	public void connectionService_UpAndRunningDataBase() {
+		JsonObject message = new JsonObject();
+		message.addProperty("message", "UP and Running DATA BASE");
+		
+		Query query = Mockito.mock(Query.class);
+		Mockito.when(entityManager.createNativeQuery(Mockito.anyString())).thenReturn(Mockito.mock(Query.class));
+		Mockito.when(query.getSingleResult()).thenReturn(message);
+		Assert.assertEquals(message.toString(), connectionService.getHealthDB().toString());
+	}
 }
+

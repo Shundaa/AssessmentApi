@@ -1,5 +1,6 @@
 package com.wipro.api.exception;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +13,8 @@ import com.google.gson.JsonObject;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    private static final Gson gson = new Gson();
+	@Autowired
+	private Gson gson;
     
 	@ExceptionHandler
 	@ResponseBody

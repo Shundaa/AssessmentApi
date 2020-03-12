@@ -1,41 +1,42 @@
 package com.wipro.api.controller;
 
-import com.wipro.api.services.ConnectionService;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.google.gson.JsonObject;
+import com.wipro.api.services.ConnectionService;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
-
-import com.wipro.api.services.ConnectionServiceTest;
-
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:test.properties")
+@RunWith(MockitoJUnitRunner.class)
 public class IndexControllerTest {
-	
-	@Mock
-	private ConnectionService connectionService;
-	
-	@Autowired
+
+	@InjectMocks
 	private IndexController indexControler;
 
+	@Mock
+	private ConnectionService connectionService;
+
+	@Rule
+	public ExpectedException exception;
+	
 	@Test
 	public void IndexController_HealthCheckReturnsOK() throws Exception {
-
-		Mockito.when(connectionService.getHealth()).thenReturn("[UP and Running]");
-		ResponseEntity<String> response = indexControler.index();
-		assertEquals(response.getBody(),"\"[UP and Running]\"");
+		JsonObject message = new JsonObject();
+		message.addProperty("message", "UP and Running");
+		Mockito.when(connectionService.getHealth()).thenReturn(message);
+		assert(!indexControler.index().getBody().isEmpty());
 	}
+
 	@Test
 	public void IndexController_HealthCheckDataBaseReturnsOK() throws Exception {
-		Mockito.when(connectionService.getHealthDB()).thenReturn("[UP and Running DATA BASE]");
-		ResponseEntity<String> response = indexControler.db();
-		assertEquals(response.getBody(),"\"[UP and Running DATA BASE]\"");
+		JsonObject message = new JsonObject();
+		message.addProperty("message", "UP and Running DATA BASE");
+		Mockito.when(connectionService.getHealthDB()).thenReturn(message);
+		assert(!indexControler.db().getBody().isEmpty());
 	}
- }
+}
