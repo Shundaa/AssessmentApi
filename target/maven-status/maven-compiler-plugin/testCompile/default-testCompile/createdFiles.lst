@@ -1,2 +1,3 @@
+com\wipro\api\exception\ApiExceptionHandlerTest.class
 com\wipro\api\services\ConnectionServiceTest.class
 com\wipro\api\controller\IndexControllerTest.class

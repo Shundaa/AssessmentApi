@@ -1,26 +1,30 @@
 package com.wipro.api.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PostConstruct;
+
+import org.hibernate.exception.JDBCConnectionException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-	@Autowired
-	private Gson gson;
-    
+	private HttpHeaders headers;
+
+	@PostConstruct
+	public void init() {
+		headers = new HttpHeaders();
+	}
+	
 	@ExceptionHandler
 	@ResponseBody
-	public ResponseEntity<String> handleDataBaseError(RuntimeException ex) {
-		JsonObject message = new JsonObject();
-		message.addProperty("message", "UP and Running Data Base Fail");
-		return new ResponseEntity<String>(gson.toJson(message), HttpStatus.SERVICE_UNAVAILABLE);
+	public ResponseEntity<String> handleDataBaseError(JDBCConnectionException ex) {
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return new ResponseEntity<String>("{\"message\":\"Up and running Database Fail\"}", headers,HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }

@@ -1,5 +1,6 @@
 package com.wipro.api.controller;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gson.JsonObject;
 import com.wipro.api.services.ConnectionService;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexControllerTest {
@@ -26,17 +27,13 @@ public class IndexControllerTest {
 	
 	@Test
 	public void IndexController_HealthCheckReturnsOK() throws Exception {
-		JsonObject message = new JsonObject();
-		message.addProperty("message", "UP and Running");
-		Mockito.when(connectionService.getHealth()).thenReturn(message);
-		assert(!indexControler.index().getBody().isEmpty());
+		Mockito.when(connectionService.getHealth()).thenReturn("{\"message\":\"Up and running\"}");
+		Assert.assertEquals(indexControler.index().getBody().toString(),"{\"message\":\"Up and running\"}");
 	}
 
 	@Test
 	public void IndexController_HealthCheckDataBaseReturnsOK() throws Exception {
-		JsonObject message = new JsonObject();
-		message.addProperty("message", "UP and Running DATA BASE");
-		Mockito.when(connectionService.getHealthDB()).thenReturn(message);
-		assert(!indexControler.db().getBody().isEmpty());
+		Mockito.when(connectionService.getHealthDB()).thenReturn("{\"message\":\"Up and running Database\"}");
+		Assert.assertEquals(indexControler.db().getBody().toString(),"{\"message\":\"Up and running Database\"}");
 	}
 }

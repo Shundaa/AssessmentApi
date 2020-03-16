@@ -1,11 +1,11 @@
 package com.wipro.api.services;
 
+import java.util.ArrayList;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import com.google.gson.JsonObject;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionServiceTest {
@@ -28,20 +25,17 @@ public class ConnectionServiceTest {
 
 	@Test
 	public void connectionService_UpAndRunning() {
-		JsonObject message = new JsonObject();
-		message.addProperty("message", "UP and Running");
-		Assert.assertEquals(message, connectionService.getHealth());
+		Assert.assertEquals(connectionService.getHealth(), "{\"message\":\"Up and running\"}");
 	}
-	
-	//@Test query on services is null????@value?
+
+	@Test // getSingleResult is returning null
 	public void connectionService_UpAndRunningDataBase() {
-		JsonObject message = new JsonObject();
-		message.addProperty("message", "UP and Running DATA BASE");
-		
+		ReflectionTestUtils.setField(connectionService, "query", "oi");
+		ArrayList<String> myList = new ArrayList<String>();
+		myList.add("oi");
 		Query query = Mockito.mock(Query.class);
+		Mockito.when(query.getResultList()).thenReturn(myList);
 		Mockito.when(entityManager.createNativeQuery(Mockito.anyString())).thenReturn(Mockito.mock(Query.class));
-		Mockito.when(query.getSingleResult()).thenReturn(message);
-		Assert.assertEquals(message.toString(), connectionService.getHealthDB().toString());
+		Assert.assertEquals(myList, connectionService.getHealthDB());
 	}
 }
-
