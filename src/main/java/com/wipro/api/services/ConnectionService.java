@@ -1,18 +1,13 @@
 package com.wipro.api.services;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component
 @Service
-@PropertySources({ @PropertySource("classpath:/AssessmentApi/src/test/resources/queries.properties"), })
+@PropertySource("classpath:queries.properties")
 public class ConnectionService {
 
 	@Autowired
@@ -26,7 +21,6 @@ public class ConnectionService {
 	}
 
 	public String getHealthDB() {
-		Query queryNativa = entityManager.createNativeQuery(query);
-		return queryNativa.getResultList().toString();
+		return entityManager.createNativeQuery(query).getSingleResult().toString();
 	}
 }

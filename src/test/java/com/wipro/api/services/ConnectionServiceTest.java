@@ -1,7 +1,5 @@
 package com.wipro.api.services;
 
-import java.util.ArrayList;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -12,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionServiceTest {
@@ -28,14 +25,13 @@ public class ConnectionServiceTest {
 		Assert.assertEquals(connectionService.getHealth(), "{\"message\":\"Up and running\"}");
 	}
 
-	@Test // getSingleResult is returning null
+	@Test
 	public void connectionService_UpAndRunningDataBase() {
-		ReflectionTestUtils.setField(connectionService, "query", "oi");
-		ArrayList<String> myList = new ArrayList<String>();
-		myList.add("oi");
+		String toAssert = "Value to assert";
 		Query query = Mockito.mock(Query.class);
-		Mockito.when(query.getResultList()).thenReturn(myList);
-		Mockito.when(entityManager.createNativeQuery(Mockito.anyString())).thenReturn(Mockito.mock(Query.class));
-		Assert.assertEquals(myList, connectionService.getHealthDB());
+		Mockito.when(query.getSingleResult()).thenReturn(toAssert);
+		Mockito.when(entityManager.createNativeQuery(Mockito.anyString())).thenReturn(query);
+		String response = connectionService.getHealthDB();
+		Assert.assertEquals(toAssert, response);
 	}
 }
