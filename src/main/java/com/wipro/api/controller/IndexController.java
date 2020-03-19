@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wipro.api.entity.Message;
+import com.wipro.api.model.Message;
 import com.wipro.api.services.ConnectionService;
 import com.wipro.api.services.ValidationService;
 
@@ -33,6 +33,7 @@ public class IndexController {
 	@PostMapping(value="/auth",produces = "application/json",consumes="application/json")
 	public ResponseEntity<String> auth(
 			@RequestBody Message message){
-		return validationService.validation(message);
+		validationService.validation(message);
+		return new ResponseEntity<>("{\"message\":\"Validation ok\"}", HttpStatus.OK);
 	}
 }
