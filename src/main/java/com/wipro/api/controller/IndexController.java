@@ -14,26 +14,26 @@ import com.wipro.api.services.ValidationService;
 
 @RestController
 public class IndexController {
-	
+
 	@Autowired
 	private ConnectionService oracleConnection;
-	
+
 	@Autowired
 	private ValidationService validationService;
-	
-	@GetMapping(value="/health-check",produces = "application/json")
+
+	@GetMapping(value = "/health-check", produces = "application/json")
 	public ResponseEntity<String> index() {
 		return new ResponseEntity<>(oracleConnection.getHealth(), HttpStatus.OK);
 	}
 
-	@GetMapping(value="/health-check/database",produces = "application/json")
+	@GetMapping(value = "/health-check/database", produces = "application/json")
 	public ResponseEntity<String> db() {
 		return new ResponseEntity<>(oracleConnection.getHealthDB(), HttpStatus.OK);
 	}
-	@PostMapping(value="/auth",produces = "application/json",consumes="application/json")
-	public ResponseEntity<String> auth(
-			@RequestBody Message message){
-		validationService.validation(message);
-		return new ResponseEntity<>("{\"message\":\"Validation ok\"}", HttpStatus.OK);
+
+	@PostMapping(value = "/auth", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<String> auth(@RequestBody Message message) {
+		message = validationService.validation(message);
+		return new ResponseEntity<>(message.toString(), HttpStatus.OK);
 	}
 }

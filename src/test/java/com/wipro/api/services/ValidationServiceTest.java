@@ -1,7 +1,5 @@
 package com.wipro.api.services;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +13,7 @@ import com.wipro.api.model.Message;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceTest {
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
@@ -24,7 +22,7 @@ public class ValidationServiceTest {
 
 	@InjectMocks
 	private Message message;
-	
+
 	private Message messageResponse;
 
 	@Test
@@ -33,14 +31,14 @@ public class ValidationServiceTest {
 		messageResponse = validationService.validation(message);
 		Assert.assertEquals(messageResponse, message);
 	}
-	
+
 	@Test
 	public void validationService_ValidateMessageCategoryValues() {
 		message.setMessageCategory("01");
 		messageResponse = validationService.validation(message);
 		Assert.assertEquals(messageResponse, message);
 	}
-	
+
 	@Test
 	public void validationService_ValidatMessageTypeValues() {
 		message.setMessageType("Erro");
@@ -50,26 +48,49 @@ public class ValidationServiceTest {
 		messageResponse = validationService.validation(message);
 		Assert.assertEquals(messageResponse, message);
 	}
-	
+
+	@Test
+	public void validationService_ValidateMessageCategoryDeviceChannelValue() {
+		message.setMessageCategory("01");
+		message.setDeviceChannel("02");
+		messageResponse = validationService.validation(message);
+		Assert.assertEquals(messageResponse, message);
+	}
+
+	@Test
+	public void validationService_ValidateMessageCategoryDeviceChannelAndMessageTypeValue() {
+		message.setMessageCategory("01");
+		message.setDeviceChannel("02");
+		message.setMessageType("AReq");
+		messageResponse = validationService.validation(message);
+		Assert.assertEquals(messageResponse, message);
+	}
+
+	@Test
+	public void validationService_ValidateNullValue() {
+		messageResponse = validationService.validation(message);
+		Assert.assertEquals(messageResponse, message);
+	}
+
 	@Test
 	public void validationService_ValidateDeviceChannelShouldThrowException() {
 		message.setDeviceChannel("01a");
 		exception.expect(ValidationException.class);
-		validationService.validation(message);	
+		validationService.validation(message);
 	}
-	
+
 	@Test
-	public void validationService_ValidateMessageCategoryShouldThrowException(){
+	public void validationService_ValidateMessageCategoryShouldThrowException() {
 		message.setMessageCategory("00");
 		exception.expect(ValidationException.class);
-		validationService.validation(message);	
+		validationService.validation(message);
 	}
-	
+
 	@Test
 	public void validationService_ValidatMessageTypeShouldThrowException() {
 		message.setMessageType("Eror");
 		exception.expect(ValidationException.class);
-		validationService.validation(message);	
+		validationService.validation(message);
 	}
-	
+
 }

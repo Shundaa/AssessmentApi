@@ -13,11 +13,12 @@ import com.wipro.api.model.Message;
 public class ValidationService {
 	public Message validation(Message message) {
 		ArrayList<ErrorMessageInvalid> error = new ArrayList<>();
-		messageTypeValidation(message,error);
-		messageCategoryValidation(message,error);
-		deviceChannelValidation(message,error);
-		if(!error.isEmpty())
-			 throw new ValidationException(error);
+		messageTypeValidation(message, error);
+		messageCategoryValidation(message, error);
+		deviceChannelValidation(message, error);
+		if (!error.isEmpty())
+			throw new ValidationException(error);
+		message.setMessageType("ARes");
 		return message;
 	}
 
@@ -30,7 +31,8 @@ public class ValidationService {
 	}
 
 	private void messageCategoryValidation(Message message, ArrayList<ErrorMessageInvalid> validation) {
-		if (!(message.getMessageCategory() == null || Pattern.matches("[0]{1}[1-2]{1}", message.getMessageCategory()))) {
+		if (!(message.getMessageCategory() == null
+				|| Pattern.matches("[0]{1}[1-2]{1}", message.getMessageCategory()))) {
 			validation.add(new ErrorMessageInvalid("nessageCategory"));
 		}
 	}

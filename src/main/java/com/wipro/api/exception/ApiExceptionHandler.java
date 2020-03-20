@@ -20,25 +20,25 @@ public class ApiExceptionHandler {
 	public void init() {
 		headers = new HttpHeaders();
 	}
-	
+
 	@ExceptionHandler
 	@ResponseBody
 	public ResponseEntity<String> handleDataBaseError(JDBCConnectionException ex) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		return new ResponseEntity<String>("{\"Message\":\"Up and running Database Fail\"}", headers,HttpStatus.SERVICE_UNAVAILABLE);
+		return new ResponseEntity<String>("{\"Message\":\"Up and running Database Fail\"}", headers,
+				HttpStatus.SERVICE_UNAVAILABLE);
 	}
-	
+
 	@ExceptionHandler
 	@ResponseBody
 	public ResponseEntity<String> handleValidationError(ValidationException validation) {
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		//StringBuilder error = new StringBuilder();
-		//validation.getList().forEach(errorsMessage -> error.append(",\""+errorsMessage.getErrorMessage()+"\""));
-		return new ResponseEntity<String>("{\"message\":\"Error\""
-				+",\"erroCode:\":\"4002\""
-				+",\"errorDetail\":\"Data validation error\""
-				+ "}"
-				, headers,HttpStatus.PRECONDITION_FAILED);
+		// Remove, but will be on the nexts update
+		// StringBuilder error = new StringBuilder();  
+		// validation.getList().forEach(errorsMessage ->
+		// error.append(",\""+errorsMessage.getErrorMessage()+"\""));
+		return new ResponseEntity<String>("{\"message\":\"Error\"" + ",\"erroCode:\":\"4002\""
+				+ ",\"errorDetail\":\"Data validation error\"" + "}", headers, HttpStatus.PRECONDITION_FAILED);
 	}
-	
+
 }

@@ -1,5 +1,7 @@
 package com.wipro.api.model;
 
+import com.google.gson.JsonObject;
+
 public class Message {
 
 	private String messageType;
@@ -28,5 +30,20 @@ public class Message {
 
 	public void setMessageCategory(String messageCategory) {
 		this.messageCategory = messageCategory;
+	}
+
+	@Override
+	public String toString() {
+		JsonObject message = new JsonObject();
+		if (messageType != null) {
+			message.addProperty("messageType", messageType);
+		}
+		if (deviceChannel != null) {
+			message.addProperty("deviceChannel", deviceChannel);
+		}
+		if (messageCategory != null) {
+			message.addProperty("messageCategory", messageCategory);
+		}
+		return message.toString();
 	}
 }
