@@ -1,4 +1,0 @@
-com\wipro\api\controller\IndexController.class
-com\wipro\api\exception\ApiExceptionHandler.class
-com\wipro\api\MvcApplication.class
-com\wipro\api\services\ConnectionService.class
