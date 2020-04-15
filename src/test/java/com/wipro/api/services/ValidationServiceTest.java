@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.wipro.api.exception.ValidationException;
 import com.wipro.api.model.Message;
 
@@ -20,14 +21,13 @@ public class ValidationServiceTest {
 	@InjectMocks
 	private ValidationService validationService;
 
-	@InjectMocks
-	private Message message;
+	private JsonNode message;
 
 	private Message messageResponse;
 
 	@Test
 	public void validationService_ValidateDeviceChannelValues() {
-		message.setDeviceChannel("01");
+		message.("DeviceChannel","01");
 		messageResponse = validationService.validation(message);
 		Assert.assertEquals(messageResponse, message);
 	}

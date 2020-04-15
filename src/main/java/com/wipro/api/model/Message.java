@@ -1,49 +1,22 @@
 package com.wipro.api.model;
 
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Message {
 
+	@JsonInclude(Include.NON_NULL)
+	@Getter @Setter
 	private String messageType;
+	
+	@JsonInclude(Include.NON_NULL)
+	@Getter @Setter
 	private String deviceChannel;
+	
+	@JsonInclude(Include.NON_NULL)
+	@Getter @Setter
 	private String messageCategory;
-
-	public String getMessageType() {
-		return messageType;
-	}
-
-	public void setMessageType(String messageType) {
-		this.messageType = messageType;
-	}
-
-	public String getDeviceChannel() {
-		return deviceChannel;
-	}
-
-	public void setDeviceChannel(String deviceChannel) {
-		this.deviceChannel = deviceChannel;
-	}
-
-	public String getMessageCategory() {
-		return messageCategory;
-	}
-
-	public void setMessageCategory(String messageCategory) {
-		this.messageCategory = messageCategory;
-	}
-
-	@Override
-	public String toString() {
-		JsonObject message = new JsonObject();
-		if (messageType != null) {
-			message.addProperty("messageType", messageType);
-		}
-		if (deviceChannel != null) {
-			message.addProperty("deviceChannel", deviceChannel);
-		}
-		if (messageCategory != null) {
-			message.addProperty("messageCategory", messageCategory);
-		}
-		return message.toString();
-	}
 }

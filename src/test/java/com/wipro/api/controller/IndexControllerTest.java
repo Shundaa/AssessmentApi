@@ -1,6 +1,7 @@
 package com.wipro.api.controller;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.wipro.api.model.HealthCheck;
 import com.wipro.api.model.Message;
 import com.wipro.api.services.ConnectionService;
 import com.wipro.api.services.ValidationService;
@@ -20,40 +23,46 @@ public class IndexControllerTest {
 	@InjectMocks
 	private IndexController indexControler;
 
-	@InjectMocks
-	private Message messageResponse;
-
-	@InjectMocks
-	private Message messageToAssert;
-
 	@Mock
 	private ConnectionService connectionService;
 
 	@Mock
 	private ValidationService validationService;
 
+
+	private Message messageToAssert;
+	
+	private HealthCheck healthCheckToAssert;
+	
 	@Rule
 	public ExpectedException exception;
-
+	
+	@Before
+	public void init() {
+		messageToAssert = new Message();
+		healthCheckToAssert = new HealthCheck();
+	}
+	
 	@Test
-	public void IndexController_HealthCheckReturnsOK() {
-		Mockito.when(connectionService.getHealth()).thenReturn("{\"message\":\"Up and running\"}");
-		Assert.assertEquals(indexControler.index().getBody().toString(), "{\"message\":\"Up and running\"}");
+	public void indexController_HealthCheckReturnsOK() {
+		healthCheckToAssert.setMessage("Up and running to assert");
+		Mockito.when(connectionService.getHealth()).thenReturn(healthCheckToAssert);
+		Assert.assertEquals(indexControler.index().getBody(),healthCheckToAssert);
 	}
 
 	@Test
-	public void IndexController_HealthCheckDataBaseReturnsOK() {
-		Mockito.when(connectionService.getHealthDB()).thenReturn("{\"message\":\"Up and running Database\"}");
-		Assert.assertEquals(indexControler.db().getBody().toString(), "{\"message\":\"Up and running Database\"}");
+	public void indexController_HealthCheckDataBaseReturnsOK() {
+		healthCheckToAssert.setMessage("Up and running DB to assert");
+		Mockito.when(connectionService.getHealthDB()).thenReturn(healthCheckToAssert);
+		Assert.assertEquals(indexControler.db().getBody(), healthCheckToAssert);
 	}
 
 	@Test
-	public void IndexController_MessageReturnsOK() {
-		Message messageToAssert = new Message();
+	public void indexController_MessageReturnsOK() {
 		messageToAssert.setDeviceChannel("Channel");
 		messageToAssert.setMessageCategory("Category");
 		messageToAssert.setMessageType("Type");
-		Mockito.when(validationService.validation(Mockito.any(Message.class))).thenReturn(messageToAssert);
-		Assert.assertEquals(indexControler.auth(messageToAssert).getBody().toString(), messageToAssert.toString());
+		Mockito.when(validationService.validation(Mockito.any(JsonNode.class))).thenReturn(messageToAssert);
+		Assert.assertEquals(indexControler.auth(Mockito.any(JsonNode.class)).getBody(), messageToAssert);
 	}
 }
