@@ -18,10 +18,11 @@ public class ValidationService {
 	private String messageTypeString = "messageType";
 	private String messageCategoryString = "messageCategory";
 	private String deviceChannelString = "deviceChannel";
+	private Message message;
 
 	public Message validation(JsonNode messageJson) {
+		message = new Message();
 		List<ErrorMessageInvalid> listError = new ArrayList<>();
-		Message message = new Message();
 		if (messageJson.has(messageTypeString)) {
 			messageTypeValidation(messageJson.get(messageTypeString).asText(), listError);
 		}
@@ -34,8 +35,9 @@ public class ValidationService {
 			deviceChannelValidation(messageJson.get(deviceChannelString).asText(), listError);
 			message.setMessageCategory(messageJson.get(deviceChannelString).asText());			
 		}
-		if (!listError.isEmpty())
+		if (!listError.isEmpty()) {
 			throw new ValidationException(listError);
+		}
 		return message;
 	}
 

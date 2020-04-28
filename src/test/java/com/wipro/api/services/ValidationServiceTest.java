@@ -1,6 +1,7 @@
 package com.wipro.api.services;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wipro.api.exception.ValidationException;
 import com.wipro.api.model.Message;
 
@@ -24,72 +26,90 @@ public class ValidationServiceTest {
 	private JsonNode message;
 
 	private Message messageResponse;
-
+	
+	private ObjectMapper mapper;
+	
+	@Before
+	public void init() {
+		messageResponse = new Message();
+		mapper = new ObjectMapper();
+	}
+	
 	@Test
 	public void validationService_ValidateDeviceChannelValues() {
-		message.("DeviceChannel","01");
+		messageResponse.setDeviceChannel("01");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidateMessageCategoryValues() {
-		message.setMessageCategory("01");
+		messageResponse.setMessageCategory("01");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidatMessageTypeValues() {
-		message.setMessageType("Erro");
+		messageResponse.setMessageType("Erro");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
-		message.setMessageType("AReq");
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
+		messageResponse.setMessageType("AReq");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidateMessageCategoryDeviceChannelValue() {
-		message.setMessageCategory("01");
-		message.setDeviceChannel("02");
+		messageResponse.setMessageCategory("01");
+		messageResponse.setDeviceChannel("02");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidateMessageCategoryDeviceChannelAndMessageTypeValue() {
-		message.setMessageCategory("01");
-		message.setDeviceChannel("02");
-		message.setMessageType("AReq");
+		messageResponse.setMessageCategory("01");
+		messageResponse.setDeviceChannel("02");
+		messageResponse.setMessageType("AReq");
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidateNullValue() {
+		message = mapper.valueToTree(messageResponse);
 		messageResponse = validationService.validation(message);
-		Assert.assertEquals(messageResponse, message);
+		Assert.assertEquals(messageResponse.getMessageType(),"ARes");
 	}
 
 	@Test
 	public void validationService_ValidateDeviceChannelShouldThrowException() {
-		message.setDeviceChannel("01a");
+		messageResponse.setDeviceChannel("01a");
 		exception.expect(ValidationException.class);
+		message = mapper.valueToTree(messageResponse);
 		validationService.validation(message);
 	}
 
 	@Test
 	public void validationService_ValidateMessageCategoryShouldThrowException() {
-		message.setMessageCategory("00");
+		messageResponse.setMessageCategory("00");
 		exception.expect(ValidationException.class);
+		message = mapper.valueToTree(messageResponse);
 		validationService.validation(message);
 	}
 
 	@Test
 	public void validationService_ValidatMessageTypeShouldThrowException() {
-		message.setMessageType("Eror");
+		messageResponse.setMessageType("Eror");
 		exception.expect(ValidationException.class);
+		message = mapper.valueToTree(messageResponse);
 		validationService.validation(message);
 	}
 

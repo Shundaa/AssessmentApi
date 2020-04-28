@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Message {
+	
+	public Message() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@JsonInclude(Include.NON_NULL)
 	@Getter @Setter
