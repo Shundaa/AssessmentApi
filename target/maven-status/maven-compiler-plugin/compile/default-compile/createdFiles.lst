@@ -1,4 +1,10 @@
-com\wipro\api\controller\IndexController.class
-com\wipro\api\exception\ApiExceptionHandler.class
+com\wipro\api\model\ErrorMessage.class
+com\wipro\api\model\ErrorMessageInvalid.class
+com\wipro\api\model\Message.class
 com\wipro\api\MvcApplication.class
 com\wipro\api\services\ConnectionService.class
+com\wipro\api\exception\ValidationException.class
+com\wipro\api\controller\IndexController.class
+com\wipro\api\exception\ApiExceptionHandler.class
+com\wipro\api\services\ValidationService.class
+com\wipro\api\model\HealthCheck.class

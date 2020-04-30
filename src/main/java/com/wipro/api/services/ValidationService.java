@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,9 +20,12 @@ public class ValidationService {
 	private String messageCategoryString = "messageCategory";
 	private String deviceChannelString = "deviceChannel";
 	private Message message;
+	private Logger logger = Logger.getLogger(ValidationService.class);
 
 	public Message validation(JsonNode messageJson) {
+
 		message = new Message();
+		logger.info("Mensagem Recebida");
 		List<ErrorMessageInvalid> listError = new ArrayList<>();
 		if (messageJson.has(messageTypeString)) {
 			messageTypeValidation(messageJson.get(messageTypeString).asText(), listError);
@@ -38,6 +42,7 @@ public class ValidationService {
 		if (!listError.isEmpty()) {
 			throw new ValidationException(listError);
 		}
+		logger.info("Mensagem pronta");
 		return message;
 	}
 
